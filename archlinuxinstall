@@ -1,0 +1,128 @@
+## PRE-INSTALLATION
+## bios mode
+# legacy first, then efi
+
+
+## set the console keyboard layout and font, default us
+## localectl list-keymaps
+localectl
+
+## connect to the internet
+ip -c a
+ping archlinux.org
+
+## update the system clock, check ntp and synchronized
+timedatectl
+
+## partition the disks
+## sda1 SWAP
+## sda2 /
+fdisk -l
+fdisk /dev/sda
+o
+n p 1 2048 +1G Y
+n p 2          Y
+a 2
+p
+t 1 82
+t 1 83
+p
+w
+
+## format the partitions
+mkswap /dev/sda1
+mkfs.ext4 /dev/sda2
+
+## mount the file system
+swapon /dev/sda1
+swapon --show
+mount /dev/sda2 /mnt
+mount | grep sda
+
+
+
+## INSTALLATION
+
+## fix keyring issue
+pacman -Sy
+pacman -S archlinux-keyring
+
+## install essential packages
+pacstrap -K /mnt base linux linux-firmware vim networkmanager grub
+
+
+
+
+## CONFIGURE THE SYSTEM
+## fstab
+genfstab -U /mnt >> /mnt/etc/fstab
+
+## chroot
+arch-chroot /mnt
+
+## time
+ln -sf /usr/share/zoneinfo/America/Denver /etc/localtime
+hwclock --systohc
+
+## localization
+locale-gen
+vim /etc/locale.gen
+ uncomment #en_US.UTF-8
+
+vim /etc/locale.conf
+ LANG=en_US.UTF-8
+ 
+## network configuration
+vim /etc/hostname
+ archlinux
+ 
+## initramfs, missing xhci_pci, ast, xhci_pci, qla2xxx, aic94xx, wd719x, bfa, qed, qla1280
+mkinitcpio -P
+
+## root password
+passwd
+
+## bootloader
+grub-install --target=i386-pc /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+## reboot
+exit
+umount /mnt
+reboot
+
+
+## start services
+systemctl enable NetworkManager --now
+ip -c a
+
+
+## create user
+useradd -m arch1 -c "Arch One"
+passwd arch1
+
+
+## install packages
+pacman -S gnome gnome-themes-extra terminator firefox firewalld neofetch sudo gnome-tweaks
+
+systemctl enable gdm
+
+
+reboot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
