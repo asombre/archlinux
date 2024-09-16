@@ -25,7 +25,7 @@ n p 2          Y
 a 2
 p
 t 1 82
-t 1 83
+t 2 83
 p
 w
 
@@ -40,7 +40,6 @@ mount /dev/sda2 /mnt
 mount | grep sda
 
 
-
 ## INSTALLATION
 
 ## fix keyring issue
@@ -49,8 +48,6 @@ pacman -S archlinux-keyring
 
 ## install essential packages
 pacstrap -K /mnt base linux linux-firmware vim networkmanager grub
-
-
 
 
 ## CONFIGURE THE SYSTEM
@@ -104,9 +101,9 @@ passwd arch1
 
 ## install packages
 pacman -S gnome gnome-themes-extra terminator firefox firewalld neofetch sudo gnome-tweaks
+pacman -S archlinux-wallpaper
 
 systemctl enable gdm
-
 
 reboot
 
