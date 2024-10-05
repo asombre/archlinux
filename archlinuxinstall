@@ -101,7 +101,7 @@ passwd arch1
 
 ## install packages
 pacman -S gnome gnome-themes-extra terminator firefox firewalld neofetch sudo gnome-tweaks
-pacman -S archlinux-wallpaper
+pacman -S git archlinux-wallpaper
 
 systemctl enable gdm
 
