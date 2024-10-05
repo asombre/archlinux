@@ -107,6 +107,8 @@ systemctl enable gdm
 
 reboot
 
+sudo pacman -S man-pages man-db
+
 
 
 
